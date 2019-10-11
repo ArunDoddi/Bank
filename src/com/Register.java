@@ -48,18 +48,29 @@ public class Register extends HttpServlet {
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "root");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/bank", "root", "root");
 			
 			if((user!=null) && (psw!=null))
 			{
-				PreparedStatement pstmt = con.prepareStatement("select * from username where username=?");
+				PreparedStatement pstmt = con.prepareStatement("select * from account where username=?");
 				pstmt.setString(1, user);
 				ResultSet rs = pstmt.executeQuery();
-				if(rs.)
+				if(rs.getString(1).equals(user))
+				{
+					pw.println("User already exists");
+				}
+			}
+			else {
+				PreparedStatement pstmt1 = con.prepareStatement("insert into account values(?,?)");
+				pstmt1.setString(1, user);
+				pstmt1.setString(2, psw);
+				
+				int i=pstmt1.executeUpdate();  
+				System.out.println(i+" records inserted");  
 			}
 		}catch(Exception e)
 		{
-			
+			e.printStackTrace();
 		}
 	}
 
